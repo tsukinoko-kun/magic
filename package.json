@@ -1,5 +1,5 @@
 {
-  "version": "1.1.3-release",
+  "version": "1.1.3",
   "release": {
     "branches": [
       "master"
@@ -13,7 +13,7 @@
     "src"
   ],
   "engines": {
-    "node": ">=14"
+    "node": ">=10"
   },
   "scripts": {
     "start": "tsdx watch",
@@ -24,7 +24,7 @@
     "size": "size-limit",
     "analyze": "size-limit --why",
     "commit": "cz",
-    "semantic-release": "semantic-release --branches master"
+    "release": "semantic-release --branches master"
   },
   "peerDependencies": {},
   "husky": {
