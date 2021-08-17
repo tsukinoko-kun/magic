@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "0.0.0",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -28,20 +28,29 @@
   "prettier": {
     "printWidth": 80,
     "semi": true,
-    "singleQuote": true,
-    "trailingComma": "es5"
+    "singleQuote": false,
+    "trailingComma": "all"
   },
-  "name": "magic",
-  "author": "Frank Mayer",
+  "name": "@frank-mayer/magic",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Frank-Mayer/photon.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Frank-Mayer/photon/issues"
+  },
+  "homepage": "https://github.com/Frank-Mayer/photon#readme",
+  "type": "module",
+  "author": "Frank-Mayer",
   "module": "dist/magic.esm.js",
   "size-limit": [
     {
       "path": "dist/magic.cjs.production.min.js",
-      "limit": "10 KB"
+      "limit": "20 KB"
     },
     {
       "path": "dist/magic.esm.js",
-      "limit": "10 KB"
+      "limit": "20 KB"
     }
   ],
   "devDependencies": {
