@@ -7,7 +7,7 @@ on:
   push:
     branches: [master]
   pull_request:
-    branches: [master]
+    branches: "*"
 
 jobs:
   quality:
@@ -30,7 +30,7 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/main' }}
+    if: ${{ github.ref == 'refs/heads/master' }}
     needs: [quality]
     steps:
       - uses: actions/checkout@v2
