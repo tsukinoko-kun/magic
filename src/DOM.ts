@@ -1,7 +1,7 @@
 interface FullEventMap
   extends HTMLBodyElementEventMap,
     HTMLFrameSetElementEventMap,
-    HTMLMarqueeElementEventMap,
+    // HTMLMarqueeElementEventMap,
     HTMLMediaElementEventMap {}
 
 interface EventNode {
