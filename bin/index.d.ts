@@ -5,3 +5,4 @@ export * from "./Hash";
 export * from "./Loop";
 export * from "./Require";
 export * from "./Timing";
+//# sourceMappingURL=index.d.ts.map
