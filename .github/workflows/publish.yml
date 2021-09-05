@@ -27,7 +27,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm install
       - run: npx tsc
-      - run: npm run test
+      - run: npx jest --verbose
 
   publish:
     runs-on: ubuntu-latest
