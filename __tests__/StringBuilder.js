@@ -48,7 +48,7 @@ test("StringBuilder.appendLine", () => {
   );
 });
 
-test("StringBuilder.appendLine", () => {
+test("StringBuilder.replace", () => {
   const sb = new StringBuilder();
   sb.append("a");
   sb.appendLine("b");
