@@ -1,11 +1,6 @@
-import { sealed } from "Decorators";
-
 /**
  * Represents a mutable string of characters
- *
- * @sealed
  */
-@sealed
 export class StringBuilder {
   private buffer: Array<string>;
   public length: number;
