@@ -1,9 +1,7 @@
-__tests__/
 .github
 node_modules/
 src/
-.gitattributes
 .gitignore
-jest.config.js
 package-lock.json
+yarn.lock
 tsconfig.json
