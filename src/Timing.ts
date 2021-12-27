@@ -40,3 +40,11 @@ export function doOnce<T, E>(
 
   return undefined;
 }
+
+/**
+ * @returns {Promise<void>} Promise that resolves after the current Event-Loop has completed
+ */
+export const nextEventLoop = (): Promise<void> =>
+  new Promise((resolve) => {
+    setTimeout(resolve, 0);
+  });
