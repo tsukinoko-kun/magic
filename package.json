@@ -11,7 +11,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest --verbose",
-    "deploy": "yarn test && yarn build && yarn publish"
+    "deploy": "yarn build && yarn test && yarn publish"
   },
   "repository": {
     "type": "git",
