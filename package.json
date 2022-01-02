@@ -10,7 +10,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "jest --verbose"
+    "test": "jest --verbose",
+    "deploy": "yarn test && yarn build && yarn publish"
   },
   "repository": {
     "type": "git",
