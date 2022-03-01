@@ -79,4 +79,20 @@ export class Client {
     }
     return this._os;
   }
+
+  private static _saveData: boolean | undefined = undefined;
+  private static getSaveData(): boolean {
+    if ("connection" in navigator && "saveData" in navigator.connection) {
+      return (navigator.connection as any).saveData;
+    }
+
+    return false;
+  }
+  public static get saveData(): boolean {
+    if (this._saveData === undefined) {
+      return (this._saveData = this.getSaveData());
+    }
+
+    return this._saveData;
+  }
 }
