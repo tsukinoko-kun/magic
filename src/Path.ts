@@ -163,6 +163,16 @@ const basename = (path: string, ext?: string): string => {
   return fileName;
 };
 
+const extname = (path: string): string => {
+  const fileName = pathSplit(path).pop() ?? "";
+  const index = fileName.lastIndexOf(".");
+
+  if (index === -1 || index === 0 || index === fileName.length - 1) {
+    return "";
+  }
+  return fileName.substring(index);
+};
+
 export const path = {
   /**
    * Normalize a string path, reducing '..' and '.' parts.
@@ -222,4 +232,12 @@ export const path = {
    * @param ext optionally, an extension to remove from the result.
    */
   basename,
+
+  /**
+   * Return the extension of the path, from the last '.' to end of string in the last portion of the path.
+   * If there is no '.' in the last portion of the path or the first character of it is '.', then it returns an empty string
+   *
+   * @param path the path to evaluate.
+   */
+  extname,
 };

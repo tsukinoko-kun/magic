@@ -24,6 +24,7 @@ const definedPaths = [
   "./test",
   "./test/test.js",
   "/test/test.js",
+  "/test/.js",
   ".././test/test.js",
   "test/.../test.js",
   "test/.../////test.js",
@@ -152,5 +153,14 @@ test("path.basename", () => {
 
   for (const path of randomPaths()) {
     expect(magicPath.basename(path)).toBe(nodePath.basename(path));
+  }
+});
+test("path.extname", () => {
+  for (const path of definedPaths) {
+    expect(magicPath.extname(path)).toBe(nodePath.extname(path));
+  }
+
+  for (const path of randomPaths()) {
+    expect(magicPath.extname(path)).toBe(nodePath.extname(path));
   }
 });
