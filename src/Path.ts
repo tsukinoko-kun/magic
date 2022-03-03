@@ -138,6 +138,31 @@ const dirname = (path: string): string => {
   }
 };
 
+const basename = (path: string, ext?: string): string => {
+  let fullSlash = true;
+  for (const char of path) {
+    if (char !== "/") {
+      fullSlash = false;
+      break;
+    }
+  }
+
+  // Weird node behavior
+  if (fullSlash) {
+    if (!ext || ext == path) {
+      return "";
+    } else {
+      return path;
+    }
+  }
+
+  const fileName = pathSplit(path).pop() ?? "";
+  if (ext && fileName.endsWith(ext)) {
+    return fileName.substring(0, fileName.length - ext.length);
+  }
+  return fileName;
+};
+
 export const path = {
   /**
    * Normalize a string path, reducing '..' and '.' parts.
@@ -188,4 +213,13 @@ export const path = {
    * @param path the path to evaluate.
    */
   dirname,
+
+  /**
+   * Return the last portion of a path. Similar to the Unix basename command.
+   * Often used to extract the file name from a fully qualified path.
+   *
+   * @param path the path to evaluate.
+   * @param ext optionally, an extension to remove from the result.
+   */
+  basename,
 };

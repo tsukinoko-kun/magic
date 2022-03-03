@@ -23,8 +23,10 @@ const definedPaths = [
   "./test/",
   "./test",
   "./test/test.js",
+  "/test/test.js",
   ".././test/test.js",
   "test/.../test.js",
+  "test/.../////test.js",
   "////..////.////",
   "/////",
   "////..////.////a/b/c///",
@@ -134,5 +136,22 @@ test("path.isAbsolute", () => {
 
   for (const path of randomPaths()) {
     expect(magicPath.isAbsolute(path)).toBe(nodePath.isAbsolute(path));
+  }
+});
+
+test("path.basename", () => {
+  for (const path of definedPaths) {
+    expect(magicPath.basename(path)).toBe(nodePath.basename(path));
+  }
+
+  for (const path of definedPaths) {
+    console.debug("basename", path);
+    expect(magicPath.basename(path, ".js")).toBe(
+      nodePath.basename(path, ".js")
+    );
+  }
+
+  for (const path of randomPaths()) {
+    expect(magicPath.basename(path)).toBe(nodePath.basename(path));
   }
 });
