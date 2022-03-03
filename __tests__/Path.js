@@ -165,3 +165,39 @@ test("path.extname", () => {
     expect(magicPath.extname(path)).toBe(nodePath.extname(path));
   }
 });
+
+test("path.format", () => {
+  {
+    const pathObj = {
+      dir: "./a",
+      base: "b.c",
+    };
+    expect(magicPath.format(pathObj)).toBe(nodePath.format(pathObj));
+  }
+  {
+    const pathObj = { name: "a", ext: ".b" };
+    expect(magicPath.format(pathObj)).toBe(nodePath.format(pathObj));
+  }
+  {
+    const pathObj = {
+      root: "/",
+      name: "a",
+      ext: ".b",
+    };
+    expect(magicPath.format(pathObj)).toBe(nodePath.format(pathObj));
+  }
+  {
+    const pathObj = {
+      dir: randomPaths(1)[0],
+      name: "abc",
+      ext: ".js",
+    };
+    expect(magicPath.format(pathObj)).toBe(nodePath.format(pathObj));
+  }
+  {
+    const pathObj = {
+      dir: randomPaths(1)[0],
+    };
+    expect(magicPath.format(pathObj)).toBe(nodePath.format(pathObj));
+  }
+});
