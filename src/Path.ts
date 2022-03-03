@@ -66,12 +66,22 @@ const join = (...paths: Array<string>): string => {
   }
 };
 
+const dirname = (path: string): string => {
+  const arr = pathSplit(path);
+
+  if (arr.length !== 0) {
+    arr.pop();
+  }
+
+  return arr.join("/") || ".";
+};
+
 export const path = {
   /**
    * Normalize a string path, reducing '..' and '.' parts.
    * When multiple slashes are found, they're replaced by a single one; when the path contains a trailing slash, it is preserved.
    *
-   * @param p string path to normalize.
+   * @param path string path to normalize.
    */
   normalize,
 
@@ -82,4 +92,11 @@ export const path = {
    * @param paths paths to join.
    */
   join,
+
+  /**
+   * Return the directory name of a path. Similar to the Unix dirname command.
+   *
+   * @param path the path to evaluate.
+   */
+  dirname,
 };
