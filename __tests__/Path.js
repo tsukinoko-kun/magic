@@ -1,4 +1,4 @@
-const nodePath = require("path");
+const nodePath = require("path").posix;
 const magicPath = require("../bin").path;
 
 globalThis.document = {
