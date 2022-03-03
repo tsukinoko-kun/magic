@@ -328,4 +328,6 @@ export const path = {
    * @param path path to evaluate.
    */
   format,
+
+  toNamespacedPath: (path: string) => path,
 };
