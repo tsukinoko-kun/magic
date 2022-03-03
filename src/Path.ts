@@ -1,10 +1,10 @@
-const pathSplit = (path: string): Array<string> => {
+const pathSplit = (path: string, keepEmpty: boolean = false): Array<string> => {
   const arr = new Array<string>();
 
   let current = "";
   for (const char of path) {
     if (char === "/" || char === "\\") {
-      if (current !== "") {
+      if (current !== "" || keepEmpty) {
         arr.push(current);
         current = "";
       }
@@ -22,37 +22,57 @@ const pathSplit = (path: string): Array<string> => {
 
 const normalize = (path: string): string => {
   const explicitDirectory = path.endsWith("/");
+  const absoluteDirectory = isAbsolute(path);
   const arr = pathSplit(path);
-  const normalized = new Array<string>();
+  const pathArr = new Array<string>();
 
   for (const item of arr) {
     switch (item) {
       case ".":
         break;
       case "..":
-        if (normalized.length !== 0) {
-          if (normalized[normalized.length - 1] === "..") {
-            normalized.push("..");
-          } else if (normalized[normalized.length - 1] === ".") {
-            normalized[normalized.length - 1] = "..";
+        if (pathArr.length !== 0) {
+          if (pathArr[pathArr.length - 1] === "..") {
+            pathArr.push("..");
+          } else if (pathArr[pathArr.length - 1] === ".") {
+            pathArr[pathArr.length - 1] = "..";
           } else {
-            normalized.pop();
+            pathArr.pop();
           }
         } else {
-          normalized.push("..");
+          pathArr.push("..");
         }
         break;
       default:
-        normalized.push(item);
+        pathArr.push(item);
         break;
     }
   }
 
-  if (explicitDirectory) {
-    return normalized.join("/") + "/";
-  } else {
-    return normalized.join("/");
+  if (absoluteDirectory) {
+    while (
+      (pathArr.length !== 0 && pathArr[0] === "..") ||
+      pathArr[0] === "."
+    ) {
+      pathArr.shift();
+    }
   }
+
+  if (pathArr.length === 0 && absoluteDirectory) {
+    return "/";
+  }
+
+  let pathStr = pathArr.join("/") || ".";
+
+  if (explicitDirectory) {
+    pathStr += "/";
+  }
+
+  if (absoluteDirectory && pathStr[0] !== "/") {
+    pathStr = "/" + pathStr;
+  }
+
+  return pathStr;
 };
 
 const join = (...paths: Array<string>): string => {
@@ -67,9 +87,21 @@ const join = (...paths: Array<string>): string => {
 };
 
 const resolve = (...pathSegments: Array<string>): string => {
+  let absolute = false;
+  for (let i = pathSegments.length - 1; i >= 0; i--) {
+    if (isAbsolute(pathSegments[i]!)) {
+      absolute = true;
+      pathSegments = pathSegments.slice(i);
+      break;
+    }
+  }
+
   const pathArr = pathSplit(
-    join(document.location.pathname, join(...pathSegments))
+    absolute
+      ? join(...pathSegments)
+      : join(document.location.pathname, join(...pathSegments))
   );
+
   while ((pathArr.length !== 0 && pathArr[0] === "..") || pathArr[0] === ".") {
     pathArr.shift();
   }
@@ -77,17 +109,33 @@ const resolve = (...pathSegments: Array<string>): string => {
   return "/" + pathArr.join("/");
 };
 
-const isAbsolute = (path: string): boolean =>
-  path[0] === "/" || path.startsWith(document.location.origin);
+const isAbsolute = (path: string): boolean => path[0] === "/";
+
+const relative = (from: string, to: string): string => {
+  return join(from, to);
+};
 
 const dirname = (path: string): string => {
-  const arr = pathSplit(path);
+  const arr = pathSplit(path, true);
+
+  while (arr[arr.length - 1] === "") {
+    arr.pop()!;
+  }
 
   if (arr.length !== 0) {
     arr.pop();
   }
 
-  return arr.join("/") || ".";
+  const pathStr = arr.join("/");
+  if (isAbsolute(path)) {
+    if (pathStr[0] === "/") {
+      return pathStr;
+    } else {
+      return "/" + pathStr;
+    }
+  } else {
+    return arr.join("/") || ".";
+  }
 };
 
 export const path = {
@@ -127,6 +175,12 @@ export const path = {
    * @param path path to test.
    */
   isAbsolute,
+
+  /**
+   * Solve the relative path from {from} to {to}.
+   * At times we have two absolute paths, and we need to derive the relative path from one to the other. This is actually the reverse transform of path.resolve.
+   */
+  relative,
 
   /**
    * Return the directory name of a path. Similar to the Unix dirname command.

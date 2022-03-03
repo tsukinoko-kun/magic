@@ -10,6 +10,33 @@ globalThis.document = {
 };
 globalThis.location = document.location;
 
+const definedPaths = [
+  "../",
+  "",
+  ".",
+  "..",
+  "./",
+  "./..",
+  "../..",
+  "./../",
+  "../../",
+  "./test/",
+  "./test",
+  "./test/test.js",
+  ".././test/test.js",
+  "test/.../test.js",
+  "////..////.////",
+  "/////",
+  "////..////.////a/b/c///",
+  "////..////.////a/b/c",
+  ".////.////a/b/c",
+  "a/b/c/d",
+  "a/b/c/d/",
+  "/a/b/c/d",
+  "/a/b/c/d/",
+  "../a/b/c/d/..",
+];
+
 /**
  *
  * @param {number} pathsCount number of paths to generate
@@ -39,83 +66,73 @@ const randomPaths = (pathsCount = 20, pathLength = 10) => {
     testPaths.push(testPathStr);
   }
 
+  for (let i = 0; i < pathsCount; i++) {
+    const specialCharacters = "!@#$%^&*()_+{}|:\"<>?[];',./";
+    const specialCharPath = new Array();
+    for (let i = 0; i < pathLength; i++) {
+      const testPathEl = new Array();
+      const cap = Math.floor(Math.random() * 10);
+      for (let j = 0; j < cap; j++) {
+        specialCharPath.push(
+          specialCharacters[
+            Math.floor(Math.random() * specialCharacters.length)
+          ]
+        );
+      }
+      specialCharPath.push(testPathEl.join(""));
+    }
+    testPaths.push(specialCharPath.join("/"));
+  }
+
   return testPaths;
 };
 
 test("path.normalize", () => {
-  expect(magicPath.normalize("./test/test.js")).toBe(
-    nodePath.normalize("./test/test.js")
-  );
-
-  expect(magicPath.normalize("./test/")).toBe(nodePath.normalize("./test/"));
-
-  expect(magicPath.normalize("./test")).toBe(nodePath.normalize("./test"));
-
-  expect(magicPath.normalize(".././test/test.js")).toBe(
-    nodePath.normalize(".././test/test.js")
-  );
-
-  expect(magicPath.normalize("test/.../test.js")).toBe(
-    nodePath.normalize("test/.../test.js")
-  );
-
-  const specialCharacters = "!@#$%^&*()_+{}|:\"<>?[];',./";
-  const testPath = new Array();
-  for (let i = 0; i < 10; i++) {
-    const testPathEl = new Array();
-    for (let j = 0; j < 10; j++) {
-      testPath.push(
-        specialCharacters[Math.floor(Math.random() * specialCharacters.length)]
-      );
-    }
-    testPath.push(testPathEl.join(""));
+  for (const path of definedPaths) {
+    expect(magicPath.normalize(path)).toBe(nodePath.normalize(path));
   }
-  const testPathString = testPath.join("/");
-  expect(magicPath.normalize(testPathString)).toBe(
-    nodePath.normalize(testPathString)
-  );
+
+  for (const path of randomPaths()) {
+    expect(magicPath.normalize(path)).toBe(nodePath.normalize(path));
+  }
 });
 
 test("path.join", () => {
-  const testPaths = randomPaths();
-  expect(magicPath.join(...testPaths)).toBe(nodePath.join(...testPaths));
+  expect(magicPath.join(...definedPaths)).toBe(nodePath.join(...definedPaths));
+
+  const rp = randomPaths();
+  expect(magicPath.join(...rp)).toBe(nodePath.join(...rp));
 });
 
 test("path.dirname", () => {
-  expect(magicPath.dirname("./test/test.js")).toBe(
-    nodePath.dirname("./test/test.js")
-  );
+  for (const path of definedPaths) {
+    expect(magicPath.dirname(path)).toBe(nodePath.dirname(path));
+  }
 
-  expect(magicPath.dirname("")).toBe(nodePath.dirname(""));
-
-  expect(magicPath.dirname("..")).toBe(nodePath.dirname(".."));
-
-  expect(magicPath.dirname("../a/b/c")).toBe(nodePath.dirname("../a/b/c"));
-
-  expect(magicPath.dirname("../a/b/c/")).toBe(nodePath.dirname("../a/b/c/"));
-
-  const testPaths = randomPaths();
-  for (const p of testPaths) {
-    expect(magicPath.dirname(p)).toBe(nodePath.dirname(p));
+  for (const path of randomPaths()) {
+    expect(magicPath.dirname(path)).toBe(nodePath.dirname(path));
   }
 });
 
 test("path.resolve", () => {
-  const testPaths = randomPaths();
-  expect(magicPath.resolve(...testPaths)).toBe(nodePath.resolve(...testPaths));
+  for (const path of definedPaths) {
+    expect(magicPath.resolve(path)).toBe(nodePath.resolve(path));
+  }
+
+  for (const path of randomPaths()) {
+    expect(magicPath.resolve(path)).toBe(nodePath.resolve(path));
+  }
+
+  const rp = randomPaths();
+  expect(magicPath.resolve(...rp)).toBe(nodePath.resolve(...rp));
 });
 
 test("path.isAbsolute", () => {
-  expect(magicPath.isAbsolute("")).toBe(nodePath.isAbsolute(""));
-  expect(magicPath.isAbsolute("/a/b/c")).toBe(nodePath.isAbsolute("/a/b/c"));
-  expect(magicPath.isAbsolute("a/b/c")).toBe(nodePath.isAbsolute("a/b/c"));
-  expect(magicPath.isAbsolute("./a/b/c")).toBe(nodePath.isAbsolute("./a/b/c"));
-  expect(magicPath.isAbsolute("../a/b/c")).toBe(
-    nodePath.isAbsolute("../a/b/c")
-  );
+  for (const path of definedPaths) {
+    expect(magicPath.isAbsolute(path)).toBe(nodePath.isAbsolute(path));
+  }
 
-  const testPaths = randomPaths();
-  for (const p of testPaths) {
-    expect(magicPath.isAbsolute(p)).toBe(nodePath.isAbsolute(p));
+  for (const path of randomPaths()) {
+    expect(magicPath.isAbsolute(path)).toBe(nodePath.isAbsolute(path));
   }
 });
