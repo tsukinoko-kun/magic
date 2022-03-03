@@ -155,6 +155,7 @@ test("path.basename", () => {
     expect(magicPath.basename(path)).toBe(nodePath.basename(path));
   }
 });
+
 test("path.extname", () => {
   for (const path of definedPaths) {
     expect(magicPath.extname(path)).toBe(nodePath.extname(path));

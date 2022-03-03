@@ -157,7 +157,7 @@ const basename = (path: string, ext?: string): string => {
   }
 
   const fileName = pathSplit(path).pop() ?? "";
-  if (ext && fileName.endsWith(ext)) {
+  if (ext && fileName.endsWith(ext) && fileName.length > ext.length) {
     return fileName.substring(0, fileName.length - ext.length);
   }
   return fileName;
