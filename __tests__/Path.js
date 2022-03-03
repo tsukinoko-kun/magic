@@ -1,13 +1,18 @@
 const nodePath = require("path");
 const magicPath = require("../bin").path;
 
+globalThis.document = {
+  location: { pathname: process.cwd(), protocol: "http:" },
+};
+globalThis.location = document.location;
+
 /**
  *
  * @param {number} pathsCount number of paths to generate
  * @param {number} pathLength length of each path (number of segments)
  * @returns {Array<string>}
  */
-const randomPaths = (pathsCount = 10, pathLength = 10) => {
+const randomPaths = (pathsCount = 20, pathLength = 10) => {
   const testPaths = new Array();
   for (let i = 0; i < pathsCount; i++) {
     const testPath = new Array();
@@ -89,4 +94,9 @@ test("path.dirname", () => {
   for (const p of testPaths) {
     expect(magicPath.dirname(p)).toBe(nodePath.dirname(p));
   }
+});
+
+test("path.resolve", () => {
+  const testPaths = randomPaths();
+  expect(magicPath.resolve(...testPaths)).toBe(nodePath.resolve(...testPaths));
 });
