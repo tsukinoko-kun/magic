@@ -145,7 +145,6 @@ test("path.basename", () => {
   }
 
   for (const path of definedPaths) {
-    console.debug("basename", path);
     expect(magicPath.basename(path, ".js")).toBe(
       nodePath.basename(path, ".js")
     );
