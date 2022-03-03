@@ -2,7 +2,11 @@ const nodePath = require("path");
 const magicPath = require("../bin").path;
 
 globalThis.document = {
-  location: { pathname: process.cwd(), protocol: "http:" },
+  location: {
+    pathname: process.cwd(),
+    origin: "file:///",
+    protocol: "http:",
+  },
 };
 globalThis.location = document.location;
 
@@ -99,4 +103,19 @@ test("path.dirname", () => {
 test("path.resolve", () => {
   const testPaths = randomPaths();
   expect(magicPath.resolve(...testPaths)).toBe(nodePath.resolve(...testPaths));
+});
+
+test("path.isAbsolute", () => {
+  expect(magicPath.isAbsolute("")).toBe(nodePath.isAbsolute(""));
+  expect(magicPath.isAbsolute("/a/b/c")).toBe(nodePath.isAbsolute("/a/b/c"));
+  expect(magicPath.isAbsolute("a/b/c")).toBe(nodePath.isAbsolute("a/b/c"));
+  expect(magicPath.isAbsolute("./a/b/c")).toBe(nodePath.isAbsolute("./a/b/c"));
+  expect(magicPath.isAbsolute("../a/b/c")).toBe(
+    nodePath.isAbsolute("../a/b/c")
+  );
+
+  const testPaths = randomPaths();
+  for (const p of testPaths) {
+    expect(magicPath.isAbsolute(p)).toBe(nodePath.isAbsolute(p));
+  }
 });

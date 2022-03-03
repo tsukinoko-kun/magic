@@ -77,6 +77,9 @@ const resolve = (...pathSegments: Array<string>): string => {
   return "/" + pathArr.join("/");
 };
 
+const isAbsolute = (path: string): boolean =>
+  path[0] === "/" || path.startsWith(document.location.origin);
+
 const dirname = (path: string): string => {
   const arr = pathSplit(path);
 
@@ -117,6 +120,13 @@ export const path = {
    * @param pathSegments string paths to join.
    */
   resolve,
+
+  /**
+   * Determines whether {path} is an absolute path. An absolute path will always resolve to the same location, regardless of the working directory.
+   *
+   * @param path path to test.
+   */
+  isAbsolute,
 
   /**
    * Return the directory name of a path. Similar to the Unix dirname command.
