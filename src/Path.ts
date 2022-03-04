@@ -237,6 +237,10 @@ const format = (path: FormatInputPathObject): string => {
   }
 };
 
+/**
+ * The path submodule provides utilities for working with file and directory paths.
+ * Compatible with node path.posix module.
+ */
 export const path = {
   /**
    * Normalize a string path, reducing '..' and '.' parts.
