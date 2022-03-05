@@ -237,6 +237,8 @@ const format = (path: FormatInputPathObject): string => {
   }
 };
 
+const escape = (path: string) => encodeURI(path);
+
 /**
  * The path submodule provides utilities for working with file and directory paths.
  * Compatible with node path.posix module.
@@ -334,4 +336,9 @@ export const path = {
   format,
 
   toNamespacedPath: (path: string) => path,
+
+  /**
+   * Escapes characters in a path that are not safe to use.
+   */
+  escape,
 };
