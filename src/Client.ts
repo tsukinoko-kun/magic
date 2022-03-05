@@ -115,15 +115,33 @@ export class Client {
     undefined;
   /** @internal */
   private static _prefersReducedMotion: boolean | undefined = undefined;
+  /** @internal */
+  private static getPrefersReducedMotion(): boolean {
+    if (this._prefersReducedMotionQuery === undefined) {
+      this._prefersReducedMotionQuery = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      );
+      if (this._prefersReducedMotionQuery) {
+        this._prefersReducedMotionQuery.addEventListener("change", () => {
+          if (this._prefersReducedMotionQuery!.matches) {
+            this._prefersReducedMotion = true;
+          } else {
+            this._prefersReducedMotion = false;
+          }
+        });
+      } else {
+        return false;
+      }
+    }
+
+    return (
+      this._prefersReducedMotionQuery && this._prefersReducedMotionQuery.matches
+    );
+  }
   /** Weather or not the browser requests to use less animation. */
   public static get prefersReducedMotion(): boolean {
     if (this._prefersReducedMotion === undefined) {
-      this._prefersReducedMotionQuery ??= window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      );
-      return (this._prefersReducedMotion =
-        this._prefersReducedMotionQuery &&
-        this._prefersReducedMotionQuery.matches);
+      return (this._prefersReducedMotion = this.getPrefersReducedMotion());
     } else {
       return this._prefersReducedMotion;
     }
