@@ -115,3 +115,17 @@ export function disposeNode(
     (<RemovableEventNode>element).remove();
   }
 }
+
+/**
+ * Gets the whole parental chain of a DOM node (excluding the node itself).
+ */
+export const getParentChain = (el: Node): Array<Node> => {
+  const chain = new Array<Node>();
+
+  let parent = el.parentNode;
+  while (parent) {
+    chain.push(parent);
+    parent = parent.parentNode;
+  }
+  return chain;
+};
