@@ -8,7 +8,7 @@ export enum os {
 }
 
 /**
- * Contains parsed client information
+ * Contains parsed client information.
  */
 export class Client {
   private static _mobile: boolean | undefined = undefined;
@@ -25,6 +25,7 @@ export class Client {
             )
     );
   }
+  /** Weather or not the client hardware is a mobile device. */
   public static get mobile() {
     if (this._mobile === undefined) {
       return (this._mobile = this.getMobile());
@@ -47,6 +48,7 @@ export class Client {
       return "";
     }
   }
+  /** Gets the clients device platform. */
   public static get platform() {
     if (this._platform === undefined) {
       return (this._platform = this.getPlatform());
@@ -73,6 +75,7 @@ export class Client {
     }
     return os.unknown;
   }
+  /** Get the client OS. */
   public static get os() {
     if (this._os === undefined) {
       return (this._os = this.getOs());
@@ -81,6 +84,8 @@ export class Client {
   }
 
   private static _saveData: boolean | undefined = undefined;
+
+  /** Weather or not the browser requests to use less bandwidth. */
   private static getSaveData(): boolean {
     if ("connection" in navigator && "saveData" in navigator.connection) {
       return (navigator.connection as any).saveData;
@@ -94,5 +99,22 @@ export class Client {
     }
 
     return this._saveData;
+  }
+
+  private static _prefersReducedMotionQuery: MediaQueryList | undefined =
+    undefined;
+  private static _prefersReducedMotion: boolean | undefined = undefined;
+  /** Weather or not the browser requests to use less animation. */
+  public static get prefersReducedMotion(): boolean {
+    if (this._prefersReducedMotion === undefined) {
+      this._prefersReducedMotionQuery ??= window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      );
+      return (this._prefersReducedMotion =
+        this._prefersReducedMotionQuery &&
+        this._prefersReducedMotionQuery.matches);
+    } else {
+      return this._prefersReducedMotion;
+    }
   }
 }
