@@ -2,7 +2,7 @@
 
 A collection of useful stuff.
 
-[![CI/CD](https://github.com/Frank-Mayer/magic/actions/workflows/CiCd.yml/badge.svg)](https://github.com/Frank-Mayer/magic/actions/workflows/CiCd.yml)
+[![CI/CD](https://github.com/Frank-Mayer/magic/actions/workflows/Test.yml/badge.svg)](https://github.com/Frank-Mayer/magic/actions/workflows/Test.yml)
 
 [Try on RunKit](https://runkit.com/npm/%40frank-mayer%2Fmagic)
 
