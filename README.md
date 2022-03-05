@@ -2,7 +2,7 @@
 
 A collection of useful stuff.
 
-[![Test](https://github.com/Frank-Mayer/magic/actions/workflows/test.yml/badge.svg)](https://github.com/Frank-Mayer/magic/actions/workflows/test.yml)
+[![CI/CD](https://github.com/Frank-Mayer/magic/actions/workflows/CiCd.yml/badge.svg)](https://github.com/Frank-Mayer/magic/actions/workflows/CiCd.yml)
 
 - Browser implementation of node path module
 - StringBuilder
