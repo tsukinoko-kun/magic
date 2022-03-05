@@ -1,3 +1,4 @@
+/** OS-identifier, used in `Client.os` */
 export enum os {
   unknown,
   windows,
@@ -11,7 +12,9 @@ export enum os {
  * Contains parsed client information.
  */
 export class Client {
+  /** @internal */
   private static _mobile: boolean | undefined = undefined;
+  /** @internal */
   private static getMobile() {
     return Boolean(
       "userAgentData" in navigator &&
@@ -34,7 +37,9 @@ export class Client {
     }
   }
 
+  /** @internal */
   private static _platform: string | undefined = undefined;
+  /** @internal */
   private static getPlatform() {
     if (
       "userAgentData" in navigator &&
@@ -56,7 +61,9 @@ export class Client {
     return this._platform;
   }
 
+  /** @internal */
   private static _os: os | undefined = undefined;
+  /** @internal */
   private static getOs() {
     if (this.platform.match(/Mac/i)) {
       return os.mac;
@@ -83,9 +90,10 @@ export class Client {
     return this._os;
   }
 
+  /** @internal */
   private static _saveData: boolean | undefined = undefined;
 
-  /** Weather or not the browser requests to use less bandwidth. */
+  /** @internal */
   private static getSaveData(): boolean {
     if ("connection" in navigator && "saveData" in navigator.connection) {
       return (navigator.connection as any).saveData;
@@ -93,6 +101,7 @@ export class Client {
 
     return false;
   }
+  /** Weather or not the browser requests to use less bandwidth. */
   public static get saveData(): boolean {
     if (this._saveData === undefined) {
       return (this._saveData = this.getSaveData());
@@ -101,8 +110,10 @@ export class Client {
     return this._saveData;
   }
 
+  /** @internal */
   private static _prefersReducedMotionQuery: MediaQueryList | undefined =
     undefined;
+  /** @internal */
   private static _prefersReducedMotion: boolean | undefined = undefined;
   /** Weather or not the browser requests to use less animation. */
   public static get prefersReducedMotion(): boolean {
