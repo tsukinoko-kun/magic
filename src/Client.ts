@@ -146,4 +146,23 @@ export class Client {
       return this._prefersReducedMotion;
     }
   }
+
+  /** @internal */
+  private static _isTouchDevice: boolean | undefined = undefined;
+  /** @internal */
+  private static getIsTouchDevice(): boolean {
+    return (
+      "ontouchstart" in window ||
+      Number(navigator.maxTouchPoints) > 0 ||
+      Number((navigator as any).msMaxTouchPoints) > 0
+    );
+  }
+  /** Weather or not the client is a touch device. */
+  public static get isTouchDevice(): boolean {
+    if (this._isTouchDevice === undefined) {
+      return (this._isTouchDevice = this.getIsTouchDevice());
+    } else {
+      return this._isTouchDevice;
+    }
+  }
 }
