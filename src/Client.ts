@@ -8,14 +8,11 @@ export enum os {
   android,
 }
 
-/**
- * Contains parsed client information.
- */
-export class Client {
+class ClientAnalyzer {
   /** @internal */
-  private static _mobile: boolean | undefined = undefined;
+  private _isMobile: boolean | undefined = undefined;
   /** @internal */
-  private static getMobile() {
+  private getIsMobile() {
     return Boolean(
       "userAgentData" in navigator &&
         typeof (navigator as any).userAgentData.mobile === "boolean"
@@ -29,18 +26,18 @@ export class Client {
     );
   }
   /** Weather or not the client hardware is a mobile device. */
-  public static get mobile() {
-    if (this._mobile === undefined) {
-      return (this._mobile = this.getMobile());
+  public get isMobile() {
+    if (this._isMobile === undefined) {
+      return (this._isMobile = this.getIsMobile());
     } else {
-      return this._mobile;
+      return this._isMobile;
     }
   }
 
   /** @internal */
-  private static _platform: string | undefined = undefined;
+  private _platform: string | undefined = undefined;
   /** @internal */
-  private static getPlatform() {
+  private getPlatform() {
     if (
       "userAgentData" in navigator &&
       "platform" in (navigator as any).userAgentData &&
@@ -54,7 +51,7 @@ export class Client {
     }
   }
   /** Gets the clients device platform. */
-  public static get platform() {
+  public get platform() {
     if (this._platform === undefined) {
       return (this._platform = this.getPlatform());
     }
@@ -62,9 +59,9 @@ export class Client {
   }
 
   /** @internal */
-  private static _os: os | undefined = undefined;
+  private _os: os | undefined = undefined;
   /** @internal */
-  private static getOs() {
+  private getOs() {
     if (this.platform.match(/Mac/i)) {
       return os.mac;
     }
@@ -83,7 +80,7 @@ export class Client {
     return os.unknown;
   }
   /** Get the client OS. */
-  public static get os() {
+  public get os() {
     if (this._os === undefined) {
       return (this._os = this.getOs());
     }
@@ -91,10 +88,10 @@ export class Client {
   }
 
   /** @internal */
-  private static _saveData: boolean | undefined = undefined;
+  private _saveData: boolean | undefined = undefined;
 
   /** @internal */
-  private static getSaveData(): boolean {
+  private getSaveData(): boolean {
     if ("connection" in navigator && "saveData" in navigator.connection) {
       return (navigator.connection as any).saveData;
     }
@@ -102,7 +99,7 @@ export class Client {
     return false;
   }
   /** Weather or not the browser requests to use less bandwidth. */
-  public static get saveData(): boolean {
+  public get saveData(): boolean {
     if (this._saveData === undefined) {
       return (this._saveData = this.getSaveData());
     }
@@ -111,12 +108,11 @@ export class Client {
   }
 
   /** @internal */
-  private static _prefersReducedMotionQuery: MediaQueryList | undefined =
-    undefined;
+  private _prefersReducedMotionQuery: MediaQueryList | undefined = undefined;
   /** @internal */
-  private static _prefersReducedMotion: boolean | undefined = undefined;
+  private _prefersReducedMotion: boolean | undefined = undefined;
   /** @internal */
-  private static getPrefersReducedMotion(): boolean {
+  private getPrefersReducedMotion(): boolean {
     if (this._prefersReducedMotionQuery === undefined) {
       this._prefersReducedMotionQuery = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
@@ -139,7 +135,7 @@ export class Client {
     );
   }
   /** Weather or not the browser requests to use less animation. */
-  public static get prefersReducedMotion(): boolean {
+  public get prefersReducedMotion(): boolean {
     if (this._prefersReducedMotion === undefined) {
       return (this._prefersReducedMotion = this.getPrefersReducedMotion());
     } else {
@@ -148,9 +144,9 @@ export class Client {
   }
 
   /** @internal */
-  private static _isTouchDevice: boolean | undefined = undefined;
+  private _isTouchDevice: boolean | undefined = undefined;
   /** @internal */
-  private static getIsTouchDevice(): boolean {
+  private getIsTouchDevice(): boolean {
     return (
       "ontouchstart" in window ||
       Number(navigator.maxTouchPoints) > 0 ||
@@ -158,7 +154,7 @@ export class Client {
     );
   }
   /** Weather or not the client is a touch device. */
-  public static get isTouchDevice(): boolean {
+  public get isTouchDevice(): boolean {
     if (this._isTouchDevice === undefined) {
       return (this._isTouchDevice = this.getIsTouchDevice());
     } else {
@@ -166,3 +162,8 @@ export class Client {
     }
   }
 }
+
+/**
+ * Contains parsed client information.
+ */
+export const client = Object.freeze(new ClientAnalyzer());
