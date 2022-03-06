@@ -1,4 +1,4 @@
-/** OS-identifier, used in `Client.os` */
+/** OS-identifier, used in `client.os` */
 export enum os {
   unknown,
   windows,
@@ -166,4 +166,4 @@ class ClientAnalyzer {
 /**
  * Contains parsed client information.
  */
-export const client = Object.freeze(new ClientAnalyzer());
+export const client = new ClientAnalyzer() as Readonly<ClientAnalyzer>;
