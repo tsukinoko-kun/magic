@@ -3,6 +3,11 @@
 *.map
 *.d.ts
 
+# !
+!/index.js
+!*.config.js
+!/__tests__/*.js
+
 # Logs
 logs
 *.log
