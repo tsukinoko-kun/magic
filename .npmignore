@@ -1,6 +1,10 @@
-.github
+__tests__/
+.github/
+node_modules/
 src/
+.gitattributes
 .gitignore
-package-lock.json
-yarn.lock
+.npmignore
+jest.config.js
 tsconfig.json
+yarn.lock
