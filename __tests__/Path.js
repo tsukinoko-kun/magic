@@ -1,5 +1,5 @@
 const nodePath = require("path").posix;
-const magicPath = require("../bin").path;
+const magicPath = require("../Path").default;
 
 globalThis.document = {
   location: {

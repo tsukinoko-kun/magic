@@ -4,10 +4,7 @@
   "description": "helpful TypeScript library",
   "main": "index.js",
   "type": "commonjs",
-  "types": "bin/",
-  "directories": {
-    "bin": "/"
-  },
+  "types": "/",
   "scripts": {
     "build": "tsc",
     "test": "jest --verbose",

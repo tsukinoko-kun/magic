@@ -1,5 +1,4 @@
-const StringBuilder =
-  require("../bin/DataStructures/StringBuilder").StringBuilder;
+const StringBuilder = require("../DataStructures/StringBuilder").StringBuilder;
 
 //#region Preset
 

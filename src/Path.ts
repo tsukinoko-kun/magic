@@ -342,3 +342,5 @@ export const path = {
    */
   escape,
 };
+
+export default path;
