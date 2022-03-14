@@ -1,4 +1,4 @@
-const capitalize = require("../String/capitalize").capitalize;
+const capitalize = require("../").capitalize;
 
 test("capitalize", () => {
   expect(capitalize("ahoi kollege")).toBe("Ahoi Kollege");

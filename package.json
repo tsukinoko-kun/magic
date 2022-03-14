@@ -8,7 +8,8 @@
   "scripts": {
     "build": "tsc",
     "test": "jest --verbose --ci --expand --logHeapUsage",
-    "deploy": "yarn build && yarn test && yarn publish"
+    "deploy": "yarn build && yarn test && yarn publish",
+    "docs": "node ./docs.cjs"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,10 @@
   "devDependencies": {
     "@types/jest": "^27.4.1",
     "jest": "^27.5.1",
+    "jsdoc-to-markdown": "^7.1.1",
+    "typedoc": "^0.22.13",
+    "typedoc-github-wiki-theme": "^1.0.0",
+    "typedoc-plugin-markdown": "^3.11.14",
     "typescript": "^4.6.2"
   },
   "dependencies": {

@@ -3,8 +3,10 @@
 *.map
 *.d.ts
 
+# Docs
+docs/
+
 # !
-!/index.js
 !*.config.js
 !/__tests__/*.js
 

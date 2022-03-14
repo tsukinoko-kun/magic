@@ -9,6 +9,7 @@ globalThis.document = {
   },
 };
 globalThis.location = document.location;
+globalThis.window = { location: document.location };
 
 const definedPaths = [
   "../",

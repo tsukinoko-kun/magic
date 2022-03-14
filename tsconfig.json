@@ -71,5 +71,12 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
   "exclude": ["*.js", "*.d.ts", "__tests__"],
-  "include": ["./src/"]
+  "include": ["./src/"],
+  "typedocOptions": {
+    "entryPoints": ["./index.ts"],
+    "out": "./docs/",
+    "theme": "markdown",
+    "cleanOutputDir": true,
+    "excludeInternal": true
+  }
 }

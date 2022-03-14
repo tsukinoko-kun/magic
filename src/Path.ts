@@ -48,7 +48,13 @@ const pathSplit = (path: string, keepEmpty: boolean = false): Array<string> => {
   return arr;
 };
 
-const normalize = (path: string): string => {
+/**
+ * Normalize a string path, reducing '..' and '.' parts.
+ * When multiple slashes are found, they're replaced by a single one; when the path contains a trailing slash, it is preserved.
+ *
+ * @param path string path to normalize.
+ */
+export const normalize = (path: string): string => {
   const explicitDirectory = path.endsWith("/");
   const absoluteDirectory = isAbsolute(path);
   const arr = pathSplit(path);
@@ -103,7 +109,13 @@ const normalize = (path: string): string => {
   return pathStr;
 };
 
-const join = (...paths: Array<string>): string => {
+/**
+ * Join all arguments together and normalize the resulting path.
+ * Arguments must be strings.
+ *
+ * @param paths paths to join.
+ */
+export const join = (...paths: Array<string>): string => {
   switch (paths.length) {
     case 0:
       return ".";
@@ -114,7 +126,19 @@ const join = (...paths: Array<string>): string => {
   }
 };
 
-const resolve = (...pathSegments: Array<string>): string => {
+/**
+ * The right-most parameter is considered {to}.  Other parameters are considered an array of {from}.
+ *
+ * Starting from leftmost {from} parameter, resolves {to} to an absolute path.
+ *
+ * If {to} isn't already absolute, {from} arguments are prepended in right to left order,
+ * until an absolute path is found. If after using all {from} paths still no absolute path is found,
+ * the current working directory is used as well. The resulting path is normalized,
+ * and trailing slashes are removed unless the path gets resolved to the root directory.
+ *
+ * @param pathSegments string paths to join.
+ */
+export const resolve = (...pathSegments: Array<string>): string => {
   let absolute = false;
   for (let i = pathSegments.length - 1; i >= 0; i--) {
     if (isAbsolute(pathSegments[i]!)) {
@@ -137,13 +161,28 @@ const resolve = (...pathSegments: Array<string>): string => {
   return "/" + pathArr.join("/");
 };
 
-const isAbsolute = (path: string): boolean => path[0] === "/";
+/**
+ * Determines whether {path} is an absolute path. An absolute path will always resolve to the same location, regardless of the working directory.
+ *
+ * @param path path to test.
+ */
+export const isAbsolute = (path: string): boolean =>
+  path[0] === "/" || path.startsWith(window.location.origin);
 
-const relative = (from: string, to: string): string => {
+/**
+ * Solve the relative path from {from} to {to}.
+ * At times we have two absolute paths, and we need to derive the relative path from one to the other. This is actually the reverse transform of path.resolve.
+ */
+export const relative = (from: string, to: string): string => {
   return join(from, to);
 };
 
-const dirname = (path: string): string => {
+/**
+ * Return the directory name of a path. Similar to the Unix dirname command.
+ *
+ * @param path the path to evaluate.
+ */
+export const dirname = (path: string): string => {
   const arr = pathSplit(path, true);
 
   while (arr[arr.length - 1] === "") {
@@ -166,7 +205,14 @@ const dirname = (path: string): string => {
   }
 };
 
-const basename = (path: string, ext?: string): string => {
+/**
+ * Return the last portion of a path. Similar to the Unix basename command.
+ * Often used to extract the file name from a fully qualified path.
+ *
+ * @param path the path to evaluate.
+ * @param ext optionally, an extension to remove from the result.
+ */
+export const basename = (path: string, ext?: string): string => {
   let fullSlash = true;
   for (const char of path) {
     if (char !== "/") {
@@ -191,7 +237,13 @@ const basename = (path: string, ext?: string): string => {
   return fileName;
 };
 
-const extname = (path: string): string => {
+/**
+ * Return the extension of the path, from the last '.' to end of string in the last portion of the path.
+ * If there is no '.' in the last portion of the path or the first character of it is '.', then it returns an empty string
+ *
+ * @param path the path to evaluate.
+ */
+export const extname = (path: string): string => {
   const fileName = pathSplit(path).pop() ?? "";
   const index = fileName.lastIndexOf(".");
 
@@ -201,7 +253,12 @@ const extname = (path: string): string => {
   return fileName.substring(index);
 };
 
-const parse = (path: string): ParsedPath => {
+/**
+ * Returns an object from a path string - the opposite of format().
+ *
+ * @param path path to evaluate.
+ */
+export const parse = (path: string): ParsedPath => {
   const root = path.startsWith("/") ? "/" : "";
   const dir = dirname(path);
   const base = basename(path);
@@ -217,7 +274,12 @@ const parse = (path: string): ParsedPath => {
   };
 };
 
-const format = (path: FormatInputPathObject): string => {
+/**
+ * Returns a path string from an object - the opposite of parse().
+ *
+ * @param path path to evaluate.
+ */
+export const format = (path: FormatInputPathObject): string => {
   const dir = path.dir ?? path.root;
   const base = path.base ?? (path.name ?? "") + (path.ext ?? "");
 
@@ -237,13 +299,16 @@ const format = (path: FormatInputPathObject): string => {
   }
 };
 
-const escape = (path: string) => encodeURI(path);
+/**
+ * Escapes characters in a path that are not safe to use.
+ */
+export const escape = (path: string) => encodeURI(path);
 
 /**
  * The path submodule provides utilities for working with file and directory paths.
  * Compatible with node path.posix module.
  */
-export const path = {
+const path = {
   /**
    * Normalize a string path, reducing '..' and '.' parts.
    * When multiple slashes are found, they're replaced by a single one; when the path contains a trailing slash, it is preserved.

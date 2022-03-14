@@ -1,4 +1,4 @@
-interface FullEventMap
+export interface FullEventMap
   extends HTMLBodyElementEventMap,
     HTMLFrameSetElementEventMap,
     // HTMLMarqueeElementEventMap,

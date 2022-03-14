@@ -1,4 +1,4 @@
-const range = require("../Loop").range;
+const range = require("../").range;
 
 test("range default no step size", () => {
   const r = Array.from(range(3, 8));
