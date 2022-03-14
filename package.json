@@ -1,6 +1,6 @@
 {
   "name": "@frank-mayer/magic",
-  "version": "1.9.1",
+  "version": "2.0.0",
   "description": "helpful TypeScript library",
   "main": "index.js",
   "type": "commonjs",
