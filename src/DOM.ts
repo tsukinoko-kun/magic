@@ -129,3 +129,18 @@ export const getParentChain = (el: Node): Array<Node> => {
   }
   return chain;
 };
+
+export const bind = <T extends object, K extends string>(
+  object: T,
+  bindableElement: HTMLInputElement,
+  propertyName: K
+) => {
+  return Object.defineProperty(object, propertyName, {
+    get: () => bindableElement.value,
+    set: (value) => {
+      bindableElement.value = String(value);
+    },
+  }) as T & {
+    [b in K]: string;
+  };
+};
