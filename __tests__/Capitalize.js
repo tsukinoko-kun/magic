@@ -1,8 +1,8 @@
-const capitalize = require("../").capitalize;
+require("../DataStructures");
 
 test("capitalize", () => {
-  expect(capitalize("ahoi kollege")).toBe("Ahoi Kollege");
-  expect(capitalize("test test  test   123\nabc")).toBe(
+  expect("ahoi kollege".capitalize()).toBe("Ahoi Kollege");
+  expect("test test  test   123\nabc".capitalize()).toBe(
     "Test Test  Test   123\nAbc"
   );
 });

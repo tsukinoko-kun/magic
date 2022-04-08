@@ -1,5 +1,5 @@
 const nodePath = require("path").posix;
-const magicPath = require("../Path").default;
+const magicPath = require("../Path");
 
 globalThis.document = {
   location: {
@@ -200,5 +200,18 @@ test("path.format", () => {
       dir: randomPaths(1)[0],
     };
     expect(magicPath.format(pathObj)).toBe(nodePath.format(pathObj));
+  }
+});
+
+test("Path class", () => {
+  for (const path of definedPaths) {
+    const pObj = new magicPath.Path(path);
+    expect(pObj.toString()).toBe(path);
+    expect(pObj.normalize().valueOf()).toBe(nodePath.normalize(path));
+  }
+
+  for (const path of randomPaths()) {
+    const pObj = new magicPath.Path(path);
+    expect(pObj.basename().valueOf()).toBe(nodePath.basename(path));
   }
 });
