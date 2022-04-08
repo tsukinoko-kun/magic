@@ -305,17 +305,59 @@ export const format = (path: FormatInputPathObject): string => {
 export const escape = (path: string) => encodeURI(path);
 
 /**
- * The path submodule provides utilities for working with file and directory paths.
+ * This wrapper Class provides utilities for working with file and directory paths.
  * Compatible with node path.posix module.
  */
-const path = {
+export class Path {
+  private readonly _value: string;
+
+  public constructor(path: string | Path) {
+    this._value = typeof path === "string" ? path : path._value;
+  }
+
+  /**
+   * Creates a copy of this Path object.
+   */
+  public copy(): Path {
+    return new Path(this._value);
+  }
+
+  valueOf(): string {
+    return this._value;
+  }
+
+  toString(): string {
+    return this._value;
+  }
+
+  /**
+   * @internal
+   */
+  public toJSON(): string {
+    return this._value;
+  }
+
+  [Symbol.toPrimitive](): string {
+    return this._value;
+  }
+
+  [Symbol.toStringTag](): string {
+    return this._value;
+  }
+
+  [Symbol.iterator](): IterableIterator<string> {
+    return pathSplit(this._value)[Symbol.iterator]();
+  }
+
   /**
    * Normalize a string path, reducing '..' and '.' parts.
    * When multiple slashes are found, they're replaced by a single one; when the path contains a trailing slash, it is preserved.
    *
    * @param path string path to normalize.
    */
-  normalize,
+  public normalize(): Path {
+    return new Path(normalize(this._value));
+  }
 
   /**
    * Join all arguments together and normalize the resulting path.
@@ -323,7 +365,9 @@ const path = {
    *
    * @param paths paths to join.
    */
-  join,
+  public join(...other: Array<Path>): Path {
+    return new Path(join(this._value, ...other.map((p) => p._value)));
+  }
 
   /**
    * The right-most parameter is considered {to}.  Other parameters are considered an array of {from}.
@@ -337,27 +381,35 @@ const path = {
    *
    * @param pathSegments string paths to join.
    */
-  resolve,
+  public resolve(...other: Array<Path>): Path {
+    return new Path(resolve(this._value, ...other.map((p) => p._value)));
+  }
 
   /**
    * Determines whether {path} is an absolute path. An absolute path will always resolve to the same location, regardless of the working directory.
    *
    * @param path path to test.
    */
-  isAbsolute,
+  public isAbsolute(): boolean {
+    return isAbsolute(this._value);
+  }
 
   /**
    * Solve the relative path from {from} to {to}.
    * At times we have two absolute paths, and we need to derive the relative path from one to the other. This is actually the reverse transform of path.resolve.
    */
-  relative,
+  public relative(to: Path): Path {
+    return new Path(relative(this._value, to._value));
+  }
 
   /**
    * Return the directory name of a path. Similar to the Unix dirname command.
    *
    * @param path the path to evaluate.
    */
-  dirname,
+  public dirname(): Path {
+    return new Path(dirname(this._value));
+  }
 
   /**
    * Return the last portion of a path. Similar to the Unix basename command.
@@ -366,7 +418,9 @@ const path = {
    * @param path the path to evaluate.
    * @param ext optionally, an extension to remove from the result.
    */
-  basename,
+  public basename(ext?: string): string {
+    return basename(this._value, ext);
+  }
 
   /**
    * Return the extension of the path, from the last '.' to end of string in the last portion of the path.
@@ -374,38 +428,46 @@ const path = {
    *
    * @param path the path to evaluate.
    */
-  extname,
+  public extname(): string {
+    return extname(this._value);
+  }
 
   /**
    * The platform-specific file separator. '/'.
    */
-  sep: "/",
+  public readonly sep: "/" | "\\" = "/";
 
   /**
    * The platform-specific file delimiter. ':'.
    */
-  delimiter: ":",
+  public readonly delimiter: ":" = ":";
 
   /**
    * Returns an object from a path string - the opposite of format().
    *
    * @param path path to evaluate.
    */
-  parse,
+  public parse(): ParsedPath {
+    return parse(this._value);
+  }
 
   /**
    * Returns a path string from an object - the opposite of parse().
    *
    * @param path path to evaluate.
    */
-  format,
+  public static fromParsedPath(path: Partial<ParsedPath>): Path {
+    return new Path(format(path));
+  }
 
-  toNamespacedPath: (path: string) => path,
+  public toNamespacedPath(): string {
+    return this._value;
+  }
 
   /**
    * Escapes characters in a path that are not safe to use.
    */
-  escape,
-};
-
-export default path;
+  public escape(): Path {
+    return new Path(escape(this._value));
+  }
+}
