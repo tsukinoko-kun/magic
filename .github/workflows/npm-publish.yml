@@ -20,11 +20,4 @@ jobs:
       - run: yarn
       - run: yarn build
       - run: yarn test
-      - uses: cycjimmy/semantic-release-action@v3
-        with:
-          extra_plugins: |
-            @semantic-release/changelog@3.0.0
-            @semantic-release/git
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - uses: codacy/git-version@2.4.0
