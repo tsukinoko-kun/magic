@@ -1,5 +1,5 @@
-export function requireScript(src: string, module = false): Promise<void> {
-  return new Promise((resolve, reject) => {
+export const requireScript = (src: string, module = false): Promise<void> =>
+  new Promise((resolve, reject) => {
     if (document.querySelector(`script[src="${src}"]`)) {
       resolve();
     } else {
@@ -21,14 +21,13 @@ export function requireScript(src: string, module = false): Promise<void> {
       document.body.appendChild(el);
     }
   });
-}
 
-export function requireLink(
+export const requireLink = (
   rel: string,
   href: string,
   type?: string
-): Promise<void> {
-  return new Promise((resolve, reject) => {
+): Promise<void> =>
+  new Promise((resolve, reject) => {
     const tEl = document.querySelector(`script[href="${href}"]`);
     if (tEl && tEl.getAttribute("rel") == rel) {
       resolve();
@@ -51,4 +50,3 @@ export function requireLink(
       document.body.appendChild(el);
     }
   });
-}

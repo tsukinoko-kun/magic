@@ -64,7 +64,7 @@ const _eventListenerCollection = new WeakMap<
  * @param listener Listener callback function.
  * @param options Event options.
  */
-export function addDisposableEventListener<
+export const addDisposableEventListener = <
   EL extends EventNode,
   K extends keyof FullEventMap
 >(
@@ -72,7 +72,7 @@ export function addDisposableEventListener<
   type: K,
   listener: (this: EL, ev: FullEventMap[K]) => any,
   options?: AddEventListenerOptions
-) {
+) => {
   element.addEventListener(type, listener as any, options);
   const listeners = _eventListenerCollection.get(element);
   if (listeners) {
@@ -83,7 +83,7 @@ export function addDisposableEventListener<
       new Set([[type, <(this: EventNode, ev: Event) => any>listener]])
     );
   }
-}
+};
 
 /**
  * Remove all event listeners from a Element to delete it savely.
@@ -92,10 +92,10 @@ export function addDisposableEventListener<
  * @param element Target DOM Node.
  * @param removeElementFromDOM Whether the remove method should be called after the dispose, true is default.
  */
-export function disposeNode(
+export const disposeNode = (
   element: EventNode,
   removeElementFromDOM: boolean = true
-) {
+) => {
   const checkAndClean = (el: EventNode) => {
     const track = _eventListenerCollection.get(el);
     if (track) {
@@ -114,7 +114,7 @@ export function disposeNode(
   if (removeElementFromDOM && "remove" in element) {
     (<RemovableEventNode>element).remove();
   }
-}
+};
 
 /**
  * Gets the whole parental chain of a DOM node (excluding the node itself).
