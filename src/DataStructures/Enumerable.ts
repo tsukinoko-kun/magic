@@ -1,3 +1,5 @@
+import { StringBuilder } from "./StringBuilder";
+
 enum EnumerableType {
   where,
   orderBy,
@@ -208,5 +210,21 @@ export class Enumerable<T> {
       resultSelector,
       second,
     });
+  }
+
+  public join(separator: string = ","): string {
+    const sb = new StringBuilder();
+    let first = true;
+    for (const item of this) {
+      if (!first) {
+        sb.append(separator);
+      } else {
+        first = false;
+      }
+
+      sb.append(`${item}`);
+    }
+
+    return sb.toString();
   }
 }
