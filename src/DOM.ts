@@ -1,4 +1,4 @@
-import { StringBuilder } from "DataStructures";
+import { StringBuilder } from "./DataStructures";
 
 export interface FullEventMap
   extends HTMLBodyElementEventMap,
