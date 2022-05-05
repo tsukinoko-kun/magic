@@ -1,3 +1,5 @@
+import { StringBuilder } from "DataStructures";
+
 export interface FullEventMap
   extends HTMLBodyElementEventMap,
     HTMLFrameSetElementEventMap,
@@ -130,4 +132,30 @@ export const getParentChain = (el: Node): Array<Node> => {
   return chain;
 };
 
+export const describe = (el: Element) => {
+  const description = new StringBuilder(`<${el.tagName}`);
+
+  if (el.id) {
+    description.append(` id="${el.id}"`);
+  }
+
+  if (el.classList.length > 0) {
+    description.append(' class="');
+    description.append(Array.from(el.classList).join(" "));
+    description.append('"');
+  }
+
+  if (el.attributes.length > 0) {
+    for (const attr of el.attributes) {
+      if (attr.value) {
+        description.append(` ${attr.name}="${attr.value}"`);
+      } else {
+        description.append(` ${attr.name}`);
+      }
+    }
+  }
+
+  description.append(">");
+
+  return description.toString();
 };
