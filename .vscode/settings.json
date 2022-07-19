@@ -1,0 +1,12 @@
+{
+  "files.exclude": {
+    "*.js": true,
+    "*.d.ts": true,
+    "node_modules": true,
+    "docs": true
+  },
+  "javascript.preferences.importModuleSpecifier": "relative",
+  "javascript.preferences.importModuleSpecifierEnding": "minimal",
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.preferences.importModuleSpecifierEnding": "minimal"
+}
