@@ -8,7 +8,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest --verbose --ci --expand --logHeapUsage",
-    "deploy": "yarn build && yarn test && yarn publish",
+    "deploy": "yarn build && yarn test && yarn npm publish --access public",
     "docs": "node ./docs.cjs"
   },
   "repository": {
