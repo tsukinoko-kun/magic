@@ -92,8 +92,11 @@ class ClientAnalyzer {
 
   /** @internal */
   private getSaveData(): boolean {
-    if ("connection" in navigator && "saveData" in navigator.connection) {
-      return (navigator.connection as any).saveData;
+    if (
+      "connection" in navigator &&
+      "saveData" in (navigator as any).connection
+    ) {
+      return (navigator as any).connection.saveData;
     }
 
     return false;
@@ -148,9 +151,9 @@ class ClientAnalyzer {
   /** @internal */
   private getIsTouchDevice(): boolean {
     return (
-      "ontouchstart" in window ||
-      Number(navigator.maxTouchPoints) > 0 ||
-      Number((navigator as any).msMaxTouchPoints) > 0
+      "ontouchstart" in window &&
+      (Number(navigator.maxTouchPoints) > 0 ||
+        Number((navigator as any).msMaxTouchPoints) > 0)
     );
   }
   /** Weather or not the client is a touch device. */

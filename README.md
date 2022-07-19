@@ -6,11 +6,14 @@ A collection of useful stuff.
 
 [Try on RunKit](https://runkit.com/npm/%40frank-mayer%2Fmagic)
 
-- Browser implementation of node path module
-- StringBuilder
-- Hash Object (async)
-- Range iterator
-- Script and Link require function (async)
+- Enumerable _(like .NET Linq)_
+- Extension Methods for Map and String.
+- StringBuilder Class
+- Client Information
+- Disposable Event Listener
+- describe function for `Element` objects
+- Browser implementation of Nodes path module
+- Script and Link require function (`Promise` based)
 - promise based delay
 - retriggerableDelay function
 - doOnce function
