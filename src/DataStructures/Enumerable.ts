@@ -23,7 +23,7 @@ type EnumerableOptions<T> =
     }
   | {
       type: EnumerableType.select;
-      selector: (item: T) => any;
+      selector: (item: T, index: number) => any;
     };
 
 const defaultCompareFn = (a: any, b: any) => {
@@ -74,8 +74,10 @@ export class Enumerable<T> {
           break;
 
         case EnumerableType.select:
+          let index = 0;
           for (const item of this.iter) {
-            yield this.options.selector(item);
+            yield this.options.selector(item, index);
+            index++;
           }
           break;
       }
@@ -176,7 +178,9 @@ export class Enumerable<T> {
    * @param selector A transform function to produce a result element value from each element.
    * @returns An Enumerable<T> whose elements are the result of invoking the transform function on each element of the source sequence and then mapping each of those sequence elements and their corresponding source element to a result element.
    */
-  public select<TResult>(selector: (item: T) => TResult): Enumerable<TResult> {
+  public select<TResult>(
+    selector: (item: T, index: number) => TResult
+  ): Enumerable<TResult> {
     return new Enumerable<any>(this, {
       type: EnumerableType.select,
       selector,
