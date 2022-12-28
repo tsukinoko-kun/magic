@@ -1,31 +1,31 @@
-const fs = require("fs");
-const path = require("path");
+const fs = require('fs');
+const path = require('path');
 
 const dirs = {
-  src: "./src/index.ts",
-  docs: "./docs",
-  dist: "../magic.wiki/",
-  url: "https://github.com/Frank-Mayer/magic/wiki",
+  src: './src/index.ts',
+  docs: './docs',
+  dist: '../magic.wiki/',
+  url: 'https://github.com/Frank-Mayer/magic/wiki',
 };
 
 const renameMap = new Map([
-  ["modules", "home"],
-  ["readme", "home"],
+  ['modules', 'home'],
+  ['readme', 'home'],
 ]);
 const renameRegex = new RegExp(
   Array.from(renameMap.keys())
-    .map((str) => "(?<=\\W|^)(" + str + ")(?=\\W|$)")
-    .join("|"),
-  "gi"
+    .map((str) => '(?<=\\W|^)(' + str + ')(?=\\W|$)')
+    .join('|'),
+  'gi'
 );
-const ignore = new Set(["readme"]);
+const ignore = new Set(['readme']);
 
-const typedocCmd = `yarn typedoc ${dirs.src}`;
+const typedocCmd = `npx typedoc ${dirs.src}`;
 console.log(typedocCmd);
-require("child_process").execSync(typedocCmd, { stdio: "inherit" });
+require('child_process').execSync(typedocCmd, { stdio: 'inherit' });
 
 for (const f of fs.readdirSync(dirs.dist)) {
-  if (f === ".git") {
+  if (f === '.git') {
     continue;
   }
 
@@ -56,9 +56,9 @@ const dirsToCopy = new Set([dirs.docs]);
 
 const trimDirsRegex = new RegExp(
   Array.from(dirsToTrim)
-    .map((str) => "(?<=\\W|^)(" + str + ")(?=\\W|$)")
-    .join("|"),
-  "gi"
+    .map((str) => '(?<=\\W|^)(' + str + ')(?=\\W|$)')
+    .join('|'),
+  'gi'
 );
 
 for (const sourceDocsDir of dirsToCopy) {
@@ -67,7 +67,7 @@ for (const sourceDocsDir of dirsToCopy) {
     const stat = fs.statSync(fullPath);
     if (stat.isFile()) {
       const extName = path.extname(f);
-      if (extName !== ".md") {
+      if (extName !== '.md') {
         continue;
       }
 
@@ -85,25 +85,25 @@ for (const sourceDocsDir of dirsToCopy) {
           renameMap.has(baseName) ? renameMap.get(baseName) + extName : f
         ),
         md
-          .replace(/(?<=[\w\d]+)\.md(?=[\)#])/g, "")
+          .replace(/(?<=[\w\d]+)\.md(?=[\)#])/g, '')
           .replace(
             /(?<=\]\()[\.\/]+[\.\/\S]+(?=\))/g,
-            (str) => "./" + str.split("/").pop()
+            (str) => './' + str.split('/').pop()
           )
-          .replace(trimDirsRegex, "")
+          .replace(trimDirsRegex, '')
           .replace(renameRegex, (v) => renameMap.get(v) ?? v)
-          .replace(/\]\(\//g, "](" + dirs.url + "/")
+          .replace(/\]\(\//g, '](' + dirs.url + '/')
       );
     }
   }
 }
 
-const package = JSON.parse(fs.readFileSync("package.json").toString());
+const package = JSON.parse(fs.readFileSync('package.json').toString());
 
 const now = new Date();
 const utc = now.toUTCString();
 
 fs.writeFileSync(
-  path.join(dirs.dist, "_Footer.md"),
+  path.join(dirs.dist, '_Footer.md'),
   `This documentation was automatically generated on ${utc} for Version \`${package.version}\`\n`
 );

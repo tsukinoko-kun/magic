@@ -14,8 +14,8 @@ class ClientAnalyzer {
   /** @internal */
   private getIsMobile() {
     return Boolean(
-      "userAgentData" in navigator &&
-        typeof (navigator as any).userAgentData.mobile === "boolean"
+      'userAgentData' in navigator &&
+        typeof (navigator as any).userAgentData.mobile === 'boolean'
         ? (navigator as any).userAgentData.mobile
         : /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(
             navigator.userAgent
@@ -25,7 +25,10 @@ class ClientAnalyzer {
             )
     );
   }
-  /** Weather or not the client hardware is a mobile device. */
+  /**
+   * Weather or not the client hardware is a mobile device.
+   * @deprecated This property uses the user agent string to determine if the client is a mobile device.
+   */
   public get isMobile() {
     if (this._isMobile === undefined) {
       return (this._isMobile = this.getIsMobile());
@@ -39,15 +42,15 @@ class ClientAnalyzer {
   /** @internal */
   private getPlatform() {
     if (
-      "userAgentData" in navigator &&
-      "platform" in (navigator as any).userAgentData &&
-      typeof (navigator as any).userAgentData.platform === "string"
+      'userAgentData' in navigator &&
+      'platform' in (navigator as any).userAgentData &&
+      typeof (navigator as any).userAgentData.platform === 'string'
     ) {
       return (navigator as any).userAgentData.platform as string;
-    } else if (typeof navigator.platform === "string") {
+    } else if (typeof navigator.platform === 'string') {
       return navigator.platform;
     } else {
-      return "";
+      return undefined;
     }
   }
   /** Gets the clients device platform. */
@@ -62,21 +65,22 @@ class ClientAnalyzer {
   private _os: os | undefined = undefined;
   /** @internal */
   private getOs() {
-    if (this.platform.match(/Mac/i)) {
-      return os.mac;
+    if (typeof this.platform == 'string') {
+      switch (this.platform.toLowerCase()) {
+        case 'mac':
+          return os.mac;
+        case 'win':
+          return os.windows;
+        case 'linux':
+          return os.linux;
+        case 'iphone':
+        case 'ipad':
+          return os.ios;
+        case 'android':
+          return os.android;
+      }
     }
-    if (this.platform.match(/Win/i)) {
-      return os.windows;
-    }
-    if (this.platform.match(/Linux/i)) {
-      return os.linux;
-    }
-    if (this.platform.match(/iPhone|iPad/i)) {
-      return os.ios;
-    }
-    if (this.platform.match(/Android/i)) {
-      return os.android;
-    }
+
     return os.unknown;
   }
   /** Get the client OS. */
@@ -93,8 +97,8 @@ class ClientAnalyzer {
   /** @internal */
   private getSaveData(): boolean {
     if (
-      "connection" in navigator &&
-      "saveData" in (navigator as any).connection
+      'connection' in navigator &&
+      'saveData' in (navigator as any).connection
     ) {
       return (navigator as any).connection.saveData;
     }
@@ -111,32 +115,26 @@ class ClientAnalyzer {
   }
 
   /** @internal */
-  private _prefersReducedMotionQuery: MediaQueryList | undefined = undefined;
-  /** @internal */
   private _prefersReducedMotion: boolean | undefined = undefined;
   /** @internal */
   private getPrefersReducedMotion(): boolean {
-    if (this._prefersReducedMotionQuery === undefined) {
-      this._prefersReducedMotionQuery = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      );
-      if (this._prefersReducedMotionQuery) {
-        this._prefersReducedMotionQuery.addEventListener("change", () => {
-          if (this._prefersReducedMotionQuery!.matches) {
-            this._prefersReducedMotion = true;
-          } else {
-            this._prefersReducedMotion = false;
-          }
-        });
-      } else {
-        return false;
-      }
+    const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    mql.addEventListener(
+      'change',
+      (ev) => {
+        this._prefersReducedMotion = ev.matches;
+      },
+      { passive: true }
+    );
+
+    if (mql) {
+      return mql.matches;
     }
 
-    return (
-      this._prefersReducedMotionQuery && this._prefersReducedMotionQuery.matches
-    );
+    return false;
   }
+
   /** Weather or not the browser requests to use less animation. */
   public get prefersReducedMotion(): boolean {
     if (this._prefersReducedMotion === undefined) {
@@ -150,8 +148,22 @@ class ClientAnalyzer {
   private _isTouchDevice: boolean | undefined = undefined;
   /** @internal */
   private getIsTouchDevice(): boolean {
+    const mql = window.matchMedia('(hover: none)');
+
+    mql.addEventListener(
+      'change',
+      (ev) => {
+        this._isTouchDevice = ev.matches;
+      },
+      { passive: true }
+    );
+
+    if (mql) {
+      return mql.matches;
+    }
+
     return (
-      "ontouchstart" in window &&
+      'ontouchstart' in window &&
       (Number(navigator.maxTouchPoints) > 0 ||
         Number((navigator as any).msMaxTouchPoints) > 0)
     );
