@@ -4,6 +4,8 @@ A collection of useful stuff.
 
 [![Test](https://github.com/Frank-Mayer/magic/actions/workflows/test.yml/badge.svg)](https://github.com/Frank-Mayer/magic/actions/workflows/test.yml)
 
+[![CodeQL](https://github.com/Frank-Mayer/magic/actions/workflows/codeql.yml/badge.svg)](https://github.com/Frank-Mayer/magic/actions/workflows/codeql.yml)
+
 [Try on RunKit](https://runkit.com/npm/%40frank-mayer%2Fmagic)
 
 - Enumerable _(like .NET Linq)_
